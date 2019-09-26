@@ -1,33 +1,43 @@
 
-function persona(nombre, apellido, altura) {
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.altura = altura;
-}
-
-persona.prototype.saludar = function () {
-console.log(`hola, me llamo ${this.nombre}${this.apellido}`)
-}
-
-persona.prototype.soyAlto = function () {
-    if (`${this.altura}` > 180) { 
-        console.log(`${this.nombre} es una persona alta`);
-    }else{
-        console.log(`${this.nombre} es una persona bajita`);
+// Prototipo de Persona.
+class Persona{
+    constructor(name, lastname, tall ) {
+      this.name = name;
+      this.lastname = lastname;
+      this.tall = tall;
+    }
+    saludar(fn) {
+      console.log(`Hola me llamó ${this.name}${this.lastname} y mido ${this.tall}`);
+      if (fn) fn(this.name, this.lastname, false);
+    }
+    soyAlto() {
+      return this.altura > 1.8;
     }
 }
 
-class Desarrollador extends persona {
-    constructor(nombre, apellido, altura){
-        super(nombre, apellido, altura)
+class Desarrollador extends Persona {
+    constructor(name, lastname, tall){
+        super(name, lastname, tall)
     }
-    saludar(){
-        console.log(`Hola, ${this.nombre}! Eres un desarrolador genial`);  
+    saludar(fn){
+        console.log(`Hola, ${this.name}! Eres un desarrolador genial`);
+        if(fn){
+            fn(this.name, this.lastname, true)
+        } 
+    }
+}
+
+function responseGretting(name, lastname, isdev){
+    console.log(`Buen dia, ${name} ${lastname}!`);
+
+    if(isdev){
+       console.log(`Eres la ostia, no sabia que eras desarrollador`);
     }
 }
 
 
-var ellande = new persona('Ellande', 'Medina', 186);
-var manolo = new persona('Manolo', 'Alvarez', 170);
-var alba = new persona('Alba', 'Sanchez', 163);
+var sergio = new Persona('Sergio', 'Medina', 186);
+var donato = new Persona('Donato', 'Alvarez', 170);
+var oscar = new Desarrollador('Oscar', 'Sanchez', 163);
 
+oscar.saludar(responseGretting);
