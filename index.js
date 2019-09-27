@@ -1,43 +1,16 @@
+const API_URL = 'https://swapi.co/api/';
+const PEOPLE_URL = 'people/:id';
 
-// Prototipo de Persona.
-class Persona{
-    constructor(name, lastname, tall ) {
-      this.name = name;
-      this.lastname = lastname;
-      this.tall = tall;
-    }
-    saludar(fn) {
-      console.log(`Hola me llamó ${this.name}${this.lastname} y mido ${this.tall}`);
-      if (fn) fn(this.name, this.lastname, false);
-    }
-    soyAlto() {
-      return this.altura > 1.8;
-    }
+const lukeUrl = `${API_URL}${PEOPLE_URL.replace(':id',1)}`;
+const opts = { crossDomain: true};
+
+const onResponse = function(data){
+    console.log(`Hola, yo soy ${data.name}`);
 }
 
-class Desarrollador extends Persona {
-    constructor(name, lastname, tall){
-        super(name, lastname, tall)
-    }
-    saludar(fn){
-        console.log(`Hola, ${this.name}! Eres un desarrolador genial`);
-        if(fn){
-            fn(this.name, this.lastname, true)
-        } 
-    }
-}
+$.get(lukeUrl, opts, onResponse);
 
-function responseGretting(name, lastname, isdev){
-    console.log(`Buen dia, ${name} ${lastname}!`);
+// $.get(lukeUrl, opts, function(data){
+//     console.log(`Hola, yo soy ${data.name}`);
+// });
 
-    if(isdev){
-       console.log(`Eres la ostia, no sabia que eras desarrollador`);
-    }
-}
-
-
-var sergio = new Persona('Sergio', 'Medina', 186);
-var donato = new Persona('Donato', 'Alvarez', 170);
-var oscar = new Desarrollador('Oscar', 'Sanchez', 163);
-
-oscar.saludar(responseGretting);
