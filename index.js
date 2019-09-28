@@ -20,47 +20,48 @@ function onError(id){
   console.log(`Sucedio un error al obtener el personaje ${id}`);
 }
 
-getCharacter(4)
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 4 ${character.name}`);
-    return getCharacter(1);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 1 ${character.name}`);
-    return getCharacter(2);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 2 ${character.name}`);
-    return getCharacter(3);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 3 ${character.name}`);
-    return getCharacter(5);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 5 ${character.name}`);
-    return getCharacter(6);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 6 ${character.name}`);
-    return getCharacter(7);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 7 ${character.name}`);
-    return getCharacter(8);
-  })
-  .then((character) =>{
-    console.log(`Hola, yo soy el personaje 8 ${character.name}`);
-  })
-  .catch(onError)
+// const arrMod = (id) => getCharacter(id);
 
-// Promesas
-// valores que aun no conocemos cuando una funcion sincrona o asincrona
-// se ejecute y se resuelva
-//tienen 3 estados
-//pending
-//fullfilled - promesa resuelta
-//rejected
-// para obtener el valor de la promesa podemos llamar al valor .then
-//podemos ejecutar multiples promesas despues del estado de 
-//fullfilled
+var ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+var promises = ids.map((id) => getCharacter(id));
+
+Promise
+  .all(promises)
+  .then(character => {
+    console.log(character);
+    })
+  .catch(onError);
+
+// getCharacter(4)
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 4 ${character.name}`);
+//     return getCharacter(1);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 1 ${character.name}`);
+//     return getCharacter(2);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 2 ${character.name}`);
+//     return getCharacter(3);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 3 ${character.name}`);
+//     return getCharacter(5);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 5 ${character.name}`);
+//     return getCharacter(6);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 6 ${character.name}`);
+//     return getCharacter(7);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 7 ${character.name}`);
+//     return getCharacter(8);
+//   })
+//   .then((character) =>{
+//     console.log(`Hola, yo soy el personaje 8 ${character.name}`);
+//   })
+//   .catch(onError)
