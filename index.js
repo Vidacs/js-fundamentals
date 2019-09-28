@@ -21,20 +21,36 @@ function onError(id){
 }
 
 getCharacter(4)
-  .then((data) =>{
-    console.log(`Hola, yo soy el personaje 4 ${data.name}`);
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 4 ${character.name}`);
     return getCharacter(1);
   })
-  .then((data) =>{
-    console.log(`Hola, yo soy el personaje 1 ${data.name}`);
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 1 ${character.name}`);
     return getCharacter(2);
   })
-  .then((data) =>{
-    console.log(`Hola, yo soy el personaje 2 ${data.name}`);
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 2 ${character.name}`);
     return getCharacter(3);
   })
-  .then((data) =>{
-    console.log(`Hola, yo soy el personaje 3 ${data.name}`);
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 3 ${character.name}`);
+    return getCharacter(5);
+  })
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 5 ${character.name}`);
+    return getCharacter(6);
+  })
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 6 ${character.name}`);
+    return getCharacter(7);
+  })
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 7 ${character.name}`);
+    return getCharacter(8);
+  })
+  .then((character) =>{
+    console.log(`Hola, yo soy el personaje 8 ${character.name}`);
   })
   .catch(onError)
 
