@@ -22,15 +22,21 @@ function onError(id){
 
 // const arrMod = (id) => getCharacter(id);
 
-var ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-var promises = ids.map((id) => getCharacter(id));
 
-Promise
-  .all(promises)
-  .then(character => {
-    console.log(character);
-    })
-  .catch(onError);
+async function getPromisesCharacters(){
+  var ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+  var promises = ids.map((id) => getCharacter(id));
+
+  try {
+    var characters = await Promise.all(promises);
+    console.log(characters);
+
+  } catch (onError) {
+    
+  }
+}
+
+getPromisesCharacters();
 
 // getCharacter(4)
 //   .then((character) =>{
