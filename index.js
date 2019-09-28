@@ -18,12 +18,23 @@ function getCharacter(id, callback){
 
 function onError(id){
   console.log(`Sucedio un error al obtener el personaje ${id}`);
-  
 }
 
 getCharacter(4)
   .then((data) =>{
-    console.log(`Hola, yo soy ${data.name}`);
+    console.log(`Hola, yo soy el personaje 4 ${data.name}`);
+    return getCharacter(1);
+  })
+  .then((data) =>{
+    console.log(`Hola, yo soy el personaje 1 ${data.name}`);
+    return getCharacter(2);
+  })
+  .then((data) =>{
+    console.log(`Hola, yo soy el personaje 2 ${data.name}`);
+    return getCharacter(3);
+  })
+  .then((data) =>{
+    console.log(`Hola, yo soy el personaje 3 ${data.name}`);
   })
   .catch(onError)
 
