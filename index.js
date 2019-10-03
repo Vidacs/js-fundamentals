@@ -3,20 +3,66 @@ const violet =  document.getElementById('violet');
 const orange =  document.getElementById('orange');
 const green =  document.getElementById('green');
 const btnPlay = document.getElementById('btnPlay');
-const lastLevel = 1;
-class Game {
+const lastLevel = 3;
+
+class Message {
+  constructor(){}
+
+  async showMessageFirstLevel(){
+    Swal.fire({
+      title: 'Sweet!',
+      text: 'Modal with a custom image.',
+      imageUrl: 'https://unsplash.it/400/200',
+      imageWidth: 400,
+      imageHeight: 200,
+      imageAlt: 'Custom image',
+      animation: false
+    })
+  }
+
+  async showGameOver(level) {
+    return Swal.fire({
+        title: `Game over`,
+        text: `Lo sentimos has perdido en el nivel ${level}`,
+        imageUrl: 'images/game_over.gif',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        animation: false,
+        allowOutsideClick: false
+    })
+}
+
+async showWinner() {
+    return Swal.fire({
+        title: `Felicidades`,
+        text: `Has ganado el juego`,
+        imageUrl: 'images/win.gif',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        animation: false,
+        allowOutsideClick: false
+    })
+  }
+}
+
+class Game extends Message{
   constructor(){
+    super();
+    this.colors = [light_blue, violet, orange, green];
     this.start = this.start.bind(this);
+    this.lightSequence = this.lightSequence.bind(this)
+    this.clickEvent = this.clickEvent.bind(this)
+    this.selectColor = this.selectColor.bind(this);
+    this.level = 1;
+    this.toggleStartGame();
     this.start();
-    this.sequenceGenerator();
-    setTimeout(() => this.nextLevel());
   }
 
   start() {
-    this.selectColor = this.selectColor.bind(this);
-    this.toggleStartGame();
-    this.level = 1;
-    this.colors = [light_blue, violet, orange, green];
+    this.sequenceGenerator();
+    setTimeout(() => this.nextLevel());
   }
 
   toggleStartGame(){
@@ -24,7 +70,6 @@ class Game {
       btnPlay.classList.remove('hide');
     } else {
       btnPlay.classList.add('hide');
-
     }
   }
 
@@ -34,9 +79,20 @@ class Game {
 
   nextLevel(){
     this.subnivel = 0;
-    this.lightSequence();
-    this.clickEvent();
+    if(this.level == 1){
+      this.showMessageFirstLevel()
+        .then(response => {
+          setTimeout(this.lightSequence, 500)
+          this.clickEvent();
+        }
+      )
+    }
+    else{
+      this.lightSequence();
+      this.clickEvent();
+    }
   }
+  
 
   blinkColor(color){
     color.classList.add('light');
@@ -109,18 +165,14 @@ class Game {
   }
 
   winGame(){
-    swal("Good job!", "You clicked the button!", "success")
-      .then( () => {
-        this.start()}
-        );
+    this.showWinner().then(btnPlay.classList.remove('hide'))
   }
   
   lostGame(){
-    swal( "Oops" ,  "Something went wrong!" ,  "error" )
-      .then(() => {
-        this.deleteEventClick();
-        this.start();
-      });
+      this.deleteEventClick();
+      this.showGameOver(this.level).then(
+        btnPlay.classList.remove('hide')
+    )
   }
 }
 
