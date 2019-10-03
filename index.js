@@ -1,73 +1,129 @@
-const API_URL = 'https://swapi.co/api/';
-const PEOPLE_URL = 'people/:id';
+const light_blue =  document.getElementById('light_blue');
+const violet =  document.getElementById('violet');
+const orange =  document.getElementById('orange');
+const green =  document.getElementById('green');
+const btnPlay = document.getElementById('btnPlay');
+const lastLevel = 1;
+class Game {
+  constructor(){
+    this.start = this.start.bind(this);
+    this.start();
+    this.sequenceGenerator();
+    setTimeout(() => this.nextLevel());
+  }
 
-const opts = { crossDomain: true};
+  start() {
+    this.selectColor = this.selectColor.bind(this);
+    this.toggleStartGame();
+    this.level = 1;
+    this.colors = [light_blue, violet, orange, green];
+  }
 
-function getCharacter(id, callback){
-  return new Promise((resolve, rejected) => {
-    const url = `${API_URL}${PEOPLE_URL.replace(':id',id)}`;
-    $
-    .get(url, opts, function(data){
-      resolve(data)
-    })
-    .fail(() => {
-      rejected(id)
-    });
-  })
-}
+  toggleStartGame(){
+    if(btnPlay.classList.contains('hide')){
+      btnPlay.classList.remove('hide');
+    } else {
+      btnPlay.classList.add('hide');
 
-function onError(id){
-  console.log(`Sucedio un error al obtener el personaje ${id}`);
-}
+    }
+  }
 
-// const arrMod = (id) => getCharacter(id);
+  sequenceGenerator(){
+    this.sequence = new Array(lastLevel).fill(0).map( n => Math.floor(Math.random()*4));    
+  }
 
+  nextLevel(){
+    this.subnivel = 0;
+    this.lightSequence();
+    this.clickEvent();
+  }
 
-async function getPromisesCharacters(){
-  var ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-  var promises = ids.map((id) => getCharacter(id));
+  blinkColor(color){
+    color.classList.add('light');
+    setTimeout(() =>{
+      color.classList.remove('light');
+    }, 350);
+  }
 
-  try {
-    var characters = await Promise.all(promises);
-    console.log(characters);
+  lightSequence(){
+    for(var i = 0; i < this.level; i++){
+      const color = this.colors[this.sequence[i]];
+      console.log(color);
 
-  } catch (onError) {
-    
+      setTimeout( () => {
+        this.blinkColor(color);
+      },1000 * i);
+    }
+  }
+
+  clickEvent(){
+    this.colors[0].addEventListener('click', this.selectColor);
+    this.colors[1].addEventListener('click', this.selectColor);
+    this.colors[2].addEventListener('click', this.selectColor);
+    this.colors[3].addEventListener('click', this.selectColor);
+  }
+
+  selectColor(ev){
+    const colorName = ev.target.dataset.color;
+    const colorNumber = this.transformColorToNumber(colorName);   
+    const color = this.colors[colorNumber];
+
+    this.blinkColor(color);
+
+    if(colorNumber === this.sequence[this.subnivel]){
+      this.subnivel++;
+      if(this.subnivel === this.level){
+        this.level++;
+        this.deleteEventClick();
+        if(this.level === (lastLevel + 1)){
+            //gano
+            this.winGame();
+        } else {
+         setTimeout( () => { this.nextLevel()}, 2000);
+        }
+      }
+    } else {
+      // perdio;
+      this.lostGame();
+    }
+  }
+
+  deleteEventClick(){
+    this.colors[0].removeEventListener('click', this.selectColor);
+    this.colors[1].removeEventListener('click', this.selectColor);
+    this.colors[2].removeEventListener('click', this.selectColor);
+    this.colors[3].removeEventListener('click', this.selectColor);
+  }
+
+  transformColorToNumber(color) {
+    switch (color){
+      case 'light_blue':
+        return 0;
+      case 'violet':
+        return 1
+      case 'orange':
+        return 2;
+      case 'green':
+        return 3
+    }
+  }
+
+  winGame(){
+    swal("Good job!", "You clicked the button!", "success")
+      .then( () => {
+        this.start()}
+        );
+  }
+  
+  lostGame(){
+    swal( "Oops" ,  "Something went wrong!" ,  "error" )
+      .then(() => {
+        this.deleteEventClick();
+        this.start();
+      });
   }
 }
 
-getPromisesCharacters();
-
-// getCharacter(4)
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 4 ${character.name}`);
-//     return getCharacter(1);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 1 ${character.name}`);
-//     return getCharacter(2);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 2 ${character.name}`);
-//     return getCharacter(3);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 3 ${character.name}`);
-//     return getCharacter(5);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 5 ${character.name}`);
-//     return getCharacter(6);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 6 ${character.name}`);
-//     return getCharacter(7);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 7 ${character.name}`);
-//     return getCharacter(8);
-//   })
-//   .then((character) =>{
-//     console.log(`Hola, yo soy el personaje 8 ${character.name}`);
-//   })
-//   .catch(onError)
+function newGame() {
+  window.game = new Game();
+}
