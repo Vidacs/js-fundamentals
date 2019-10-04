@@ -176,6 +176,6 @@ class Game extends Message{
   }
 }
 
-function newGame() {
+function startGame() {
   window.game = new Game();
 }
